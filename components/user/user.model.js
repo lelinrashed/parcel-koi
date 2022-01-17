@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+const mongoose = require("mongoose");
 
 // Schema
 const userSchema = new mongoose.Schema({
@@ -7,11 +7,13 @@ const userSchema = new mongoose.Schema({
     unique: true,
     required: true,
   },
-  createAt: {
+  createdAt: {
     type: Date,
     required: true,
   },
 });
 
 // Reference model
-const User = mongoose.model("User");
+const User = mongoose.model("User", userSchema);
+
+module.exports = User;
