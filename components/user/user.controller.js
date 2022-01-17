@@ -15,3 +15,13 @@ exports.createUser = async (req, res) => {
     console.log(error);
   }
 };
+
+/**
+ * Get all users
+ * @param {*} req
+ * @param {*} res
+ */
+exports.getAllUsers = async (req, res) => {
+  const users = await User.find();
+  res.json({ success: true, users });
+};
