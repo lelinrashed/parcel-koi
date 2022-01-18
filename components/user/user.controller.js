@@ -23,5 +23,40 @@ exports.createUser = async (req, res) => {
  */
 exports.getAllUsers = async (req, res) => {
   const users = await User.find();
-  res.json({ success: true, users });
+  const data = [];
+  users.map((user) => {
+    data.push({
+      id: user._id,
+      username: user.username,
+      createdAt: new Date(user.createdAt).toDateString(),
+    });
+  });
+  res.json({ success: true, users: data });
+};
+
+/**
+ * Update user
+ * @param {*} req
+ * @param {*} res
+ */
+exports.updateUser = async (req, res) => {
+  const { userId } = req.body;
+  const user = await User.findById(userId);
+  user.username = req.body.username;
+  user.save();
+  return res.status(200).send({ success: true, message: "User updated" });
+};
+
+/**
+ * Return delete user
+ * @param {*} req
+ * @param {*} res
+ */
+exports.deleteUser = async (req, res) => {
+  const { userId } = req.body;
+  await User.deleteOne({ _id: userId });
+  return res.status(200).json({
+    success: true,
+    message: "User deleted",
+  });
 };
