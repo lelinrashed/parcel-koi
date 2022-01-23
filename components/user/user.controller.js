@@ -1,3 +1,4 @@
+const { logger } = require("express-winston");
 const User = require("./user.model");
 
 /**
@@ -54,6 +55,10 @@ exports.updateUser = async (req, res) => {
  */
 exports.deleteUser = async (req, res) => {
   const { userId } = req.body;
+  const user = await User.findById(userId);
+  if (!user) {
+    return res.status(404).json({success: false, message: "User not found" })
+  }
   await User.deleteOne({ _id: userId });
   return res.status(200).json({
     success: true,
